@@ -5,14 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Table(name = "vendors")
+@Table(name = "projects")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Vendor {
+public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,19 +19,20 @@ public class Vendor {
     @Column(nullable = false)
     private String name;
     
-    @Column(nullable = false, unique = true)
-    private String email;
+    @Column(columnDefinition = "TEXT")
+    private String description;
     
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private VendorStatus status;
+    private ProjectStatus status;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organization_id", nullable = false)
+    private Organization organization;
     
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
     
-    @ManyToMany(mappedBy = "vendors")
-    private List<Project> projects;
-
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
