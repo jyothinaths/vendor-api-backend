@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "projects")
@@ -32,9 +35,9 @@ public class Project {
     
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
-    
     @ManyToMany(mappedBy = "projects")
     private List<Vendor> vendors = new ArrayList<>();
+
 
     @PrePersist
     protected void onCreate() {
