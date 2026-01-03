@@ -39,17 +39,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-<<<<<<< HEAD
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/error").permitAll()
-=======
-                        .requestMatchers("/auth/**", "/h2-console/**").permitAll()
->>>>>>> 827dc45759fe81f1e624f6aded1c34720060ea39
+                        .requestMatchers("/api/auth/**", "/h2-console/**", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->
@@ -85,7 +80,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
+            throws Exception {
         return config.getAuthenticationManager();
     }
 
@@ -97,23 +93,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-<<<<<<< HEAD
         configuration.setAllowedOriginPatterns(List.of("*"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
-        
-=======
-        configuration.setAllowedOrigins(List.of(
-                "http://localhost:3000",
-                "https://vendor-api-backend-rh7f.onrender.com"
-        ));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
 
->>>>>>> 827dc45759fe81f1e624f6aded1c34720060ea39
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -134,10 +119,6 @@ public class SecurityConfig {
                 org.setPassword(passwordEncoder.encode("password"));
                 org.setRole(Role.ORG);
                 userRepository.save(org);
-
-                System.out.println("Demo users created:");
-                System.out.println("- admin / password (ADMIN)");
-                System.out.println("- org / password (ORG)");
             }
         };
     }
