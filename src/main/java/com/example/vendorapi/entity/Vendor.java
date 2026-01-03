@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,14 +30,15 @@ public class Vendor {
     
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
-    
+
     @ManyToMany
     @JoinTable(
-        name = "vendor_project",
-        joinColumns = @JoinColumn(name = "vendor_id"),
-        inverseJoinColumns = @JoinColumn(name = "project_id")
+            name = "vendor_project",
+            joinColumns = @JoinColumn(name = "vendor_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id")
     )
     private List<Project> projects = new ArrayList<>();
+
 
     @PrePersist
     protected void onCreate() {
