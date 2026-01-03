@@ -30,8 +30,13 @@ public class Vendor {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
     
-    @ManyToMany(mappedBy = "vendors")
-    private List<Project> projects;
+    @ManyToMany
+    @JoinTable(
+        name = "vendor_project",
+        joinColumns = @JoinColumn(name = "vendor_id"),
+        inverseJoinColumns = @JoinColumn(name = "project_id")
+    )
+    private List<Project> projects = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {
