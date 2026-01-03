@@ -33,6 +33,9 @@ public class Project {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
     
+    @ManyToMany(mappedBy = "projects")
+    private List<Vendor> vendors = new ArrayList<>();
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
